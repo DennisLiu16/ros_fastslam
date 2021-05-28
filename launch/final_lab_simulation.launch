@@ -1,0 +1,44 @@
+<launch>
+
+			
+  
+  <node pkg="tf" type="static_transform_publisher" name="tf" args="0 0 0 0 0 0 map odom 50"/>
+
+  <!-- these are the arguments you can pass this launch file, for example paused:=true -->
+  <arg name="paused" default="false"/>
+  <arg name="use_sim_time" default="true"/>
+  <arg name="gui" default="true"/>
+  <arg name="headless" default="false"/>
+  <arg name="debug" default="false"/>
+  <arg name="model" default="$(find fastslam_localization)/urdf/minicar_description/minicar.xacro"/>
+
+  <!-- We resume the logic in empty_world.launch, changing only the name of the world to be launched -->
+  <include file="$(find gazebo_ros)/launch/empty_world.launch">
+    <!--<arg name="world_name"  value="$(find fastslam_localization)/world/free_space"/>-->
+    <arg name="world_name"  value="$(find fastslam_localization)/world/eight"/>
+    <arg name="debug" value="$(arg debug)" />
+    <arg name="gui" value="$(arg gui)" />
+    <arg name="paused" value="$(arg paused)"/>
+    <arg name="use_sim_time" value="$(arg use_sim_time)"/>
+    <arg name="headless" value="$(arg headless)"/>
+  </include>
+
+  <param name="robot_description" command="$(find xacro)/xacro.py $(arg model)" />
+
+  <!-- push robot_description to factory and spawn robot in gazebo -->
+  <node name="urdf_spawner" pkg="gazebo_ros" type="spawn_model"
+        args="-z 1.0 -unpause -urdf -model robot -param robot_description" respawn="false" output="screen" />
+
+
+
+  <node pkg="robot_state_publisher" type="robot_state_publisher"  name="robot_state_publisher">
+    <param name="publish_frequency" type="double" value="20.0" />
+  </node>
+  <node pkg="simulation_env" name="pose_pub" type="tf_subscribe"/>
+  <node pkg="fastslam_localization" name="Plot" type="Plot.py"/>
+  <node pkg="fastslam_localization" name="localization" type="localization"/>
+  <node pkg="fastslam_localization" name="fake_odom" type="fake_odom"/>
+  <node pkg="fastslam_localization" name="fake_camera" type="fake_camera"/>
+
+
+</launch>

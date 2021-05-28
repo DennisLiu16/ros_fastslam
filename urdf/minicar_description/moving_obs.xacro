@@ -1,0 +1,97 @@
+<?xml version="1.0"?>
+
+<robot name="moving_obs" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+
+  <xacro:property name="PI" value="3.1415926535897931"/>
+  <xacro:property name="DEG_TO_RAD" value="${PI/180.0}" />
+
+  <xacro:property name="chassisHeight" value="0.3"/>
+  <xacro:property name="chassisLength" value="0.34"/>
+  <xacro:property name="chassisWidth" value="0.24"/>
+  <xacro:property name="chassisMass" value="173.8"/>
+
+  <xacro:property name="casterRadius" value="0.036"/>
+  <xacro:property name="casterMass" value="10"/>
+
+  <xacro:property name="wheelWidth" value="0.026"/>
+  <xacro:property name="wheelRadius" value="0.1"/>
+  <xacro:property name="wheelPos" value="0.2"/>
+  <xacro:property name="wheelMass" value="4.5"/>
+
+
+
+  <xacro:include filename="$(find simulation_env)/urdf/minicar_description/minicar.gazebo" />
+  <xacro:include filename="$(find simulation_env)/urdf/minicar_description/materials.xacro" />
+  <xacro:include filename="$(find simulation_env)/urdf/minicar_description/macros.xacro" />
+
+  <link name="base_footprint" />
+
+<!--chassis-->
+  <joint name="base_joint" type="fixed">
+    <parent link="base_footprint"/>
+    <child link="base_link"/>
+		<origin rpy="0 0 0" xyz="0 0 ${2*wheelRadius+chassisHeight/2}"/>
+  </joint>
+
+  <link name="base_link">
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+	<box size="${chassisLength} ${chassisWidth} ${chassisHeight}"/>
+      </geometry>
+    </collision>
+
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+	<box size="${chassisLength} ${chassisWidth} ${chassisHeight}"/>
+      </geometry>
+      <material name="white"/>
+    </visual>
+
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <mass value="${chassisMass}"/>
+      <box_inertia m="${chassisMass}" x="${chassisLength}" y="${chassisWidth}" z="${chassisHeight}"/>
+    </inertial>
+  </link>
+
+<!--caster_wheel-->
+  <joint name="fixed" type="fixed">
+    <parent link="base_link"/>
+    <child link="caster_wheel"/>
+		<origin rpy="0 0 0" xyz="0.085 0 ${casterRadius-2*wheelRadius}"/>
+  </joint>
+
+  <link name="caster_wheel">
+
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+	<sphere radius="${casterRadius}"/>
+      </geometry>
+    </collision>
+  
+    <visual> 
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+	<sphere radius="${casterRadius}"/>
+      </geometry>
+      <material name="red"/>
+    </visual>
+
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <mass value="${casterMass}"/>
+      <sphere_inertia m="${casterMass}" r="${casterRadius}"/>
+    </inertial>
+  </link>
+
+<!--wheels from macros.xacro-->
+  <wheel lr="left" tY="1"/>
+  <wheel lr="right" tY="-1"/>
+
+
+
+</robot>

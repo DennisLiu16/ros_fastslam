@@ -1,0 +1,128 @@
+<?xml version="1.0"?>
+
+<robot name="moving_obs" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+
+  <xacro:property name="PI" value="3.1415926535897931"/>
+  <xacro:property name="DEG_TO_RAD" value="${PI/180.0}" />
+
+  <xacro:property name="chassisHeight" value="3"/>
+  <xacro:property name="chassisLength" value="0.17"/>
+  <xacro:property name="chassisWidth" value="0.12"/>
+  <xacro:property name="chassisMass" value="173.8"/>
+
+  <xacro:property name="casterRadius" value="0.036"/>
+  <xacro:property name="casterMass" value="10"/>
+
+  <xacro:property name="wheelWidth" value="0.026"/>
+  <xacro:property name="wheelRadius" value="0.1"/>
+  <xacro:property name="wheelPos" value="0.2"/>
+  <xacro:property name="wheelMass" value="4.5"/>
+
+
+
+  <xacro:include filename="$(find simulation_env)/urdf/minicar_description/minicar.gazebo" />
+  <xacro:include filename="$(find simulation_env)/urdf/minicar_description/materials.xacro" />
+  <xacro:include filename="$(find simulation_env)/urdf/minicar_description/macros_2.xacro" />
+
+  <link name="base_footprint" />
+
+<!--chassis-->
+  <joint name="base_joint" type="fixed">
+    <parent link="base_footprint"/>
+    <child link="base_link"/>
+		<origin rpy="0 0 0" xyz="0 0 ${2*wheelRadius+chassisHeight/2}"/>
+  </joint>
+
+  <link name="base_link">
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+	<box size="${chassisLength} ${chassisWidth} ${chassisHeight}"/>
+      </geometry>
+    </collision>
+
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+	<box size="${chassisLength} ${chassisWidth} ${chassisHeight}"/>
+      </geometry>
+      <material name="white"/>
+    </visual>
+
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <mass value="${chassisMass}"/>
+      <box_inertia m="${chassisMass}" x="${chassisLength}" y="${chassisWidth}" z="${chassisHeight}"/>
+    </inertial>
+  </link>
+
+
+
+<!--wheels from macros.xacro-->
+  <wheel lr="left" tY="1"/>
+  <wheel lr="right" tY="-1"/>
+
+
+
+  <joint name="wheel_joint" type="fixed">
+    <parent link="right_wheel"/>
+    <child link="wheel_joint"/>
+     <origin rpy="0 0 0" xyz="0 0.8 -0.5"/>
+  </joint>
+
+  <link name="wheel_joint">
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+	<box size="0.1 0.1 0.8"/>
+      </geometry>
+    </collision>
+
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+	<box size="0.1 0.1 0.6"/>
+      </geometry>
+      <material name="white"/>
+    </visual>
+
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <mass value="0.1"/>
+      <box_inertia m="0.1" x="0.1" y="0.1" z="0.8"/>
+    </inertial>
+  </link>
+
+  <joint name="wheel_joint_w" type="fixed">
+    <parent link="right_wheel"/>
+    <child link="wheel_joint_w"/>
+     <origin rpy="0 0 0" xyz="0 -0.8 -0.5"/>
+  </joint>
+
+  <link name="wheel_joint_w">
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+	<box size="0.1 0.1 0.6"/>
+      </geometry>
+    </collision>
+
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+	<box size="0.1 0.1 0.8"/>
+      </geometry>
+      <material name="white"/>
+    </visual>
+
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <mass value="0.1"/>
+      <box_inertia m="0.1" x="0.1" y="0.1" z="0.8"/>
+    </inertial>
+  </link>
+
+
+
+</robot>

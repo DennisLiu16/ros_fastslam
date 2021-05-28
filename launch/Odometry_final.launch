@@ -1,0 +1,15 @@
+<launch>
+
+  <arg name="map_file" default="$(find simulation_env)/map/free_space.yaml"/>
+
+
+  <node pkg="map_server" name="map_server" type="map_server" args="$(arg map_file)"/>
+
+  <node pkg="tf" type="static_transform_publisher" name="tf" args="0 0 0 0 0 0 map odom 50"/>
+  <node pkg="simulation_env" name="Interface" type="Interface.py" output='screen'/>
+  <node pkg="simulation_env" name="odom_pub" type="tf_pos"/>
+  <node pkg="simulation_env" name="pose_pub" type="tf_subscribe"/>
+  <node pkg="simulation_env" name="path_pub" type="path_pub.py"/>
+  <!-- <node pkg="rviz" name="rviz" type="rviz"/> -->
+
+</launch>

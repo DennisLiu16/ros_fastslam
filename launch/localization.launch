@@ -1,0 +1,8 @@
+<launch>
+
+
+
+	<node pkg="fastslam_localization" name="Plot" type="Plot.py"/>
+	<node pkg="fastslam_localization" name="localization" type="localization"/>
+
+</launch>
