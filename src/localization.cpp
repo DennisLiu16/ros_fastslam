@@ -87,8 +87,8 @@ int main(int argc, char **argv) {
 	const int M = 100;							// Particle number
 //	const int landmark_number = 60;				// expext cone number
 	double del_t = 0.05;						// unit : (s)
-	double Init_Size = 0.5f;					// the init range of vehicle X Y, unit: (m)
-	double Init_way = 2.5;						// the init range of vehicle Theta, unit: (degree)
+	double Init_Size = 0.5f;					// the init range of vehicle X Y, unit: (m) 0.5
+	double Init_way = 2.5;						// the init range of vehicle Theta, unit: (degree) 2.5
 	double Init_position[2] = { 9*0.395+12.0,7*0.395+12.0 };	// unit: (m)
 	double Init_head_angle = PI / 2;			// unit: (rad)
 //	int file_times = 10;						// sample time if number = 10, sample time = del_t*10 = 0.1;
