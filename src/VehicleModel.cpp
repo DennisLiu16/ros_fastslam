@@ -7,10 +7,10 @@
 
 
 void VehicleModel(double v, double w, double *previous_pose, double del_t, double *X) {
-	double c1 = 0.000001;
-	double c2 = 0.000001;
-	double c3 = 0.000001;
-	double c4 = 0.000001;
+	double c1 = 0.05;
+	double c2 = 0.01;
+	double c3 = 0.01;
+	double c4 = 0.05;
 
 	double r[4] = {0,0,0,0};
 	r[0] = (double)pow((c1 * fabs(v) + c2 * fabs(w)), 2);
