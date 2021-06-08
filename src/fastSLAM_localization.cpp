@@ -13,7 +13,7 @@ void fast_slam_loc(double* zt, double* ut, double* St, int Nt_1, struct ConeSet*
 	//--const double Rt_disgain = 0.000001;				// Rt[0] = q * q * Rt_disgain; 0.005
 	const double Rt_disgain = 0.05;
 	//--const double Rt_degree = 0.000001;				// sqrt()=> deg
-	const double Rt_degree = 0.04;				
+	const double Rt_degree = 0.045;
 	// the parameter of the cone is the same or different (association)
 	//--const double observer_distance = 0.3;			// unit(meter)
 	const double observer_distance = 0.3;
